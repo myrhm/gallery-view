@@ -17,5 +17,8 @@
   "bugs": {
     "url": "https://github.com/myrhm/gallery-view/issues"
   },
-  "homepage": "https://github.com/myrhm/gallery-view#readme"
+  "homepage": "https://github.com/myrhm/gallery-view#readme",
+  "devDependencies": {
+    "tailwindcss": "^4.1.18"
+  }
 }
