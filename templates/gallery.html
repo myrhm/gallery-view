@@ -11,6 +11,26 @@
   <div class="max-w-6xl mx-auto">
     <header class="bg-white bg-opacity-95 p-4 rounded-lg shadow-lg my-8">
       <h1 class="text-4xl font-bold text-gray-800 mb-2">Gallery</h1>
+      <div class="flex flex-wrap gap-8 mt-4">
+        <div class="flex items-center gap-3">
+          <span class="text-2xl font-bold text-indigo-600" id="totalCount">0</span>
+          <span class="text-gray-600 text-sm">Total Files</span>
+        </div>
+        <div class="flex items-center gap-3">
+          <span class="text-2xl font-bold text-indigo-600" id="imageCount">0</span>
+          <span class="text-gray-600 text-sm">Images</span>
+        </div>
+        <div class="flex items-center gap-3">
+          <span class="text-2xl font-bold text-indigo-600" id="videoCount">0</span>
+          <span class="text-gray-600 text-sm">Videos</span>
+        </div>
+      </div>
+
+      <div class="flex flex-wrap gap-3 mt-6">
+        <button class="filter-btn active" data-filter="all">All</button>
+        <button class="filter-btn" data-filter="image">Images</button>
+        <button class="filter-btn" data-filter="video">Videos</button>
+      </div>
     </header>
   </div>
 
