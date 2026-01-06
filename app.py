@@ -7,7 +7,7 @@ app = Flask(__name__)
 PORT = 9090
 
 MEDIA_FOLDER = os.path.join(os.getcwd(), 'media')
-os.makedirs(MEDIA_FOLDER, exist_ok = true)
+os.makedirs(MEDIA_FOLDER, exist_ok = True)
 
 SUPPORTED_EXTENSIONS = {
     'image': ('.jpg', '.jpeg', '.png', '.gif', '.webp', '.bmp', '.svg'),
@@ -86,4 +86,4 @@ def get_stats():
 if __name__ == '__main__':
     print(f"Media folder: {MEDIA_FOLDER}")
     print(f"Starting server at http://localhost:{PORT}")
-    app.run(debug=True, host='0.0.0.0', port={PORT})
+    app.run(debug=True, host='0.0.0.0', port=PORT)
