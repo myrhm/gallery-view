@@ -2,5 +2,7 @@ poetry.lock
 node_modules
 package-lock.json
 
-static/js
 media
+
+static/js
+static/output.css
