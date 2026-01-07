@@ -27,9 +27,9 @@ def get_media_files():
             ext = os.path.splitext(filename)[1].lower()
             file_type = None
 
-            if ext in SUPPORTED_EXTENSION['image']:
+            if ext in SUPPORTED_EXTENSIONS['image']:
                 file_type = 'image'
-            elif ext in SUPPORTED_EXTENSION['video']:
+            elif ext in SUPPORTED_EXTENSIONS['video']:
                 file_type = 'video'
             else:
                 continue
@@ -41,7 +41,7 @@ def get_media_files():
                 'name': filename,
                 'type': file_type,
                 'url': f'/media/{filename}',
-                'size': formal_file_size(file_size),
+                'size': format_file_size(file_size),
                 'date': file_date
             })
     except Exception as e:
@@ -50,6 +50,13 @@ def get_media_files():
     files.sort(key=lambda x: x['name'].lower())
 
     return files
+
+def format_file_size(bytes_size):
+    for unit in ['B', 'KB', 'MB', 'GB']:
+        if bytes_size < 1024.0:
+            return f"{bytes_size:.2f}{unit}"
+        bytes_size /= 1024.0
+    return f"{bytes_size:.2f}TB"
 
 @app.route('/')
 def gallery():
