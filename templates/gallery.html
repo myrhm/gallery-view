@@ -32,21 +32,26 @@
         <button class="filter-btn" data-filter="video">Videos</button>
       </div>
     </header>
+
     <!-- Gallery Grid -->
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 mb-8" id="gallery">
     </div>
 
     <!-- if Empty -->
-    <div id="emptyState" class="text-center py-20 bg-white bg-opacity-95 rounded-lg text-gray-400">
+    <div id="emptyState" class="hidden text-center py-20 bg-white bg-opacity-95 rounded-lg text-gray-400">
       <div class="text-5xl mb-6">📁</div>
       <h2 class="text-xl font-semibold mb-2">No media files found</h2>
       <p>Please add images or videos to the 'media' folder</p>
     </div>
   </div>
 
+  <!-- Modal -->
+  <div id="modal"
+  class="fixed inset-0 bg-black bg-opacity-90 z-50 hidden flex items-center justify-center p-5 modal-content">
+    <button></button>
+  </div>
 
-
-<script src="/static/script.js">
+<script src="/static/main.js">
 </script>
 </body>
 </html>
