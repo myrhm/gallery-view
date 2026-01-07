@@ -4,7 +4,13 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Tes npm run\" && exit 1",
+    "build:css": "tailwindcss -i ./input.css -o ./static/output.css",
+    "watch:css": "tailwindcss -i ./input.css -o ./static/output.css --watch",
+    "build:ts": "esbuild src/js/main.ts --outdir=static/js --format=esm --sourcemap",
+    "watch:ts": "esbuild src/js/main.ts --outdir=static/js --format=esm --sourcemap --watch",
+    "dev": "concurrently \"npm run watch:css\" \"npm run watch:ts\"",
+    "build": "npm run build:css && npm run build:ts"
   },
   "repository": {
     "type": "git",
@@ -19,6 +25,10 @@
   },
   "homepage": "https://github.com/myrhm/gallery-view#readme",
   "devDependencies": {
-    "tailwindcss": "^4.1.18"
+    "@tailwindcss/cli": "^4.1.18",
+    "concurrently": "^9.2.1",
+    "esbuild": "^0.27.2",
+    "tailwindcss": "^4.1.18",
+    "typescript": "^5.9.3"
   }
 }
