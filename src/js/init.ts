@@ -1,3 +1,4 @@
+import { fetchStats } from './modules/api.js';
 
 export async function initApp(): Promise<void> {
   log('Initializing Media Viewer...');
@@ -10,6 +11,8 @@ export async function initApp(): Promise<void> {
     } else {
       log('No media files found in window.mediaFiles', 'warn');
     }
+
+    await fetchStats();
 
   } catch (error) {
     const message = error instanceof Error ? error.message : String(error);
