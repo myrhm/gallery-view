@@ -18,8 +18,6 @@ export function filterFiles(filter: FilterType): MediaFile[] {
 function createMediaItems(file: MediaFile, index: number): HTMLElement {
   const item = document.createElement('div');
   item.className = 'media-item';
-  item.style.borderRadius = '10px';
-  item.style.overflow = 'hidden';
 
   let thumbnail: HTMLElement;
   if (file.type == 'image') {
@@ -46,7 +44,7 @@ function createMediaItems(file: MediaFile, index: number): HTMLElement {
       <span>${file.type.toUpperCase()}</span>
       <span>${file.size}</span>
     </div>
-    <div class="media-meta mt-1 text-gray-400">
+    <div class="media-meta media-meta-date">
       <span>${file.date}</span>
     </div>
   `;

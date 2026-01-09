@@ -1,1 +1,31 @@
 @import "tailwindcss";
+
+@layer components {
+    .media-item {
+        @apply rounded-lg overflow-hidden bg-white shadow-md transition-all cursor-pointer hover:shadow-xl hover:-translate-y-1;
+    }
+
+    .media-thumbnail {
+        @apply w-full h-64 object-cover bg-gray-200 block;
+    }
+
+    .media-info {
+        @apply p-4;
+    }
+
+    .media-name {
+        @apply font-semibold text-gray-800 text-sm whitespace-nowrap overflow-hidden text-ellipsis mb-2;
+    }
+
+    .media-meta {
+        @apply flex justify-between text-xs text-gray-500;
+    }
+
+    .media-meta-date {
+        @apply text-gray-400 mt-1;
+    }
+
+    .media-type {
+        @apply px-2 py-1 bg-gray-100 rounded text-indigo-600 font-semibold;
+    }
+}
