@@ -48,24 +48,24 @@
 
   <!-- Modal -->
   <div id="modal"
-  class="fixed inset-0 bg-black bg-opacity-90 z-50 hidden flex items-center justify-center p-5 modal-content">
+  class="fixed inset-0 bg-black bg-opacity-40 z-50 flex items-center justify-center p-5 modal-content">
     <!-- Previous Button -->
     <button class="modal-nav prev absolute left-5 top-1/2 -translate-y-1/2
-    w-14 h-14 bg-black bg-opacity-50 hover:bg-opacity-90 text-white rounded-full
-    flex items-center justify-center text-4xl transition-all"
+    w-14 h-14 text-slate-300 hover:text-slate-50 rounded-full
+    flex items-center justify-center text-4xl font-bold transition-all"
     onclick="prevMedia()">
       <
     </button>
     <!-- Next Button -->
-    <button class="modal-nav next absolute left-5 top-1/2 -translate-y-1/2
-    w-14 h-14 bg-black bg-opacity-50 hover:bg-opacity-90 text-white rounded-full
-    flex items-center justify-center text-4xl transition-all"
+    <button class="modal-nav next absolute right-5 top-1/2 -translate-y-1/2
+    w-14 h-14 text-slate-300 hover:text-slate-50 rounded-full
+    flex items-center justify-center text-4xl font-bold transition-all"
     onclick="nextMedia()">
       >
     </button>
     <!-- Close Button -->
-    <button class="absolute top-5 right-6 w-12 h-12 bg-black bg-opacity-50
-    hover:bg-opacity-80 text-white rounded-full flex items-center justify-center
+    <button class="modal-close absolute top-5 right-6 w-12 h-12
+    text-slate-300 hover:text-slate-50 rounded-full flex items-center justify-center
     text-5xl transition-all" onclick="closeModal()">
       &times;
     </button>
@@ -76,8 +76,8 @@
     </div>
 
     <!-- File Info -->
-    <div class="absolute bottom-4 left-1/2 -translate-x-1/2 bg-black bg-opacity-70
-    text-white px-6 py-4 rounded-lg text-sm">
+    <div class="absolute bottom-4 left-1/2 -translate-x-1/2 text-white
+    px-6 py-4 rounded-lg text-sm">
       <span id="modalFileName"></span>
       (<span id="modalFileIndex">1</span>/<span id="modalFileTotal">1</span>)
     </div>
