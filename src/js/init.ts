@@ -1,5 +1,6 @@
 import { fetchStats } from './modules/api.js';
 import { log, setMediaFiles, MediaFile } from './modules/utils.js';
+import { renderGallery } from './modules/gallery.js';
 
 export async function initApp(): Promise<void> {
   log('Initializing Media Viewer...');
@@ -14,6 +15,9 @@ export async function initApp(): Promise<void> {
     }
 
     await fetchStats();
+    renderGallery();
+
+    log('Rendering gallery success', 'success');
 
   } catch (error) {
     const message = error instanceof Error ? error.message : String(error);
