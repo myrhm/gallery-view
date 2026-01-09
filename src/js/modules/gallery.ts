@@ -1,9 +1,14 @@
 import { getMediaFiles, MediaFile, log, getElementOrThrow } from './utils.js';
+import { openModal } from './modal.js';
 
 type FilterType = 'all' | 'image' | 'video';
 
 let currentFilter: FilterType = 'all';
 let filteredFiles: MediaFile[] = [];
+
+export function getFilteredFiles(): MediaFile[] {
+  return filteredFiles;
+}
 
 export function filterFiles(filter: FilterType): MediaFile[] {
   const allFiles = getMediaFiles();
@@ -52,7 +57,9 @@ function createMediaItems(file: MediaFile, index: number): HTMLElement {
   item.appendChild(thumbnail);
   item.appendChild(info);
 
-  // TODO: buat modal
+  item.addEventListener('click', () => {
+    openModal(index);
+  });
 
   return item;
 }
