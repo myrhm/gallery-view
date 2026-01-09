@@ -34,7 +34,8 @@
     </header>
 
     <!-- Gallery Grid -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 mb-8" id="gallery">
+    <div class="bg-white bg-opacity-95 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4
+      rounded-lg shadow-lg mb-8 gap-4 p-4" id="gallery">
     </div>
 
     <!-- if Empty -->
@@ -51,6 +52,9 @@
     <button></button>
   </div>
 
+<script>
+  window.mediaFiles = {{ files | tojson }}
+</script>
 <script type="module" src="/static/js/main.js">
 </script>
 </body>
