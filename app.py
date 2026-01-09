@@ -70,7 +70,7 @@ def serve_media(filename):
 
     filepath = os.path.join(MEDIA_FOLDER, filename)
 
-    if not os.path.exist(filepath) or not os.path.isfile(filepath):
+    if not os.path.exists(filepath) or not os.path.isfile(filepath):
         return "File not found", 404
 
     if not os.path.abspath(filepath).startswith(os.path.abspath(MEDIA_FOLDER)):
