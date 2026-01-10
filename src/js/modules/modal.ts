@@ -14,6 +14,7 @@ export function openModal(index: number): void {
 
   if (!filteredFiles || filteredFiles.length === 0) {
     log('No files to display', 'warn');
+    return;
   }
 
   const file = filteredFiles[index];
