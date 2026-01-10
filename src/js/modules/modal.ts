@@ -42,7 +42,8 @@ export function openModal(index: number): void {
   // supaya user gak bisa scroll
   // kenapa? Karena seluruh element body di luar viewport adalah 'overflow'
   document.body.style.overflow = 'hidden';
-  log('Modal opened', 'success');
+
+  // log('Modal opened', 'success');
 }
 
 export function closeModal() {
