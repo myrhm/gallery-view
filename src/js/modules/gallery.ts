@@ -75,6 +75,7 @@ export function renderGallery(): void {
 
   if (filteredFiles.length == 0) {
     emptyState.classList.remove('hidden');
+    gallery.classList.add('hidden');
     return;
   }
 
