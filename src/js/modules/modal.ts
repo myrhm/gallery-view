@@ -6,9 +6,7 @@ let nextBtn: HTMLElement | null;
 let prevBtn: HTMLElement | null;
 
 export function openModal(index: number): void {
-  console.log(modalIndex);
   modalIndex = index;
-  console.log(modalIndex);
   const modal = getElementOrThrow('modal');
   const filteredFiles = getFilteredFiles();
 
@@ -65,9 +63,11 @@ export function nextMedia() {
 
   if (modalIndex < filteredFiles.length - 1) {
     prevBtn.classList.add('hover:text-slate-50');
+    prevBtn.classList.add('active:text-slate-50');
     openModal(modalIndex + 1)
   } else {
     nextBtn.classList.remove('hover:text-slate-50');
+    nextBtn.classList.remove('active:text-slate-50');
     log('last file', 'warn');
   }
 }
@@ -77,11 +77,25 @@ export function prevMedia() {
 
   if (modalIndex > 0) {
     nextBtn.classList.add('hover:text-slate-50');
+    nextBtn.classList.add('active:text-slate-50');
     openModal(modalIndex - 1);
   } else {
     prevBtn.classList.remove('hover:text-slate-50');
+    prevBtn.classList.remove('active:text-slate-50');
     log('first file', 'warn');
   }
+}
+
+export function setupCloseModalBackground() {
+  const modal = getElementOrThrow('modal');
+
+  modal.addEventListener('click', function(event: MouseClick) {
+    if (event.target === this) {
+      closeModal();
+    }
+  });
+
+  log('Modal backgroun click setup success', 'success');
 }
 
 export function setupModalButtons(): void {
