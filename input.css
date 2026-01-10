@@ -31,6 +31,6 @@
 
    /* Bagian lightbox */
    .modal-media {
-       @apply object-cover;
+       @apply object-contain max-h-[95vh] max-w-[95vw];
    }
 }
