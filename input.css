@@ -31,6 +31,6 @@
 
    /* Bagian lightbox */
    .modal-media {
-       @apply object-contain max-h-[95vh] max-w-[95vw];
+       @apply object-contain max-h-[100vh] max-w-[100vw] md:max-h-[95vh] md:max-w-[95vw];
    }
 }

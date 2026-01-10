@@ -51,21 +51,23 @@
   class="hidden fixed inset-0 bg-black bg-opacity-40 z-50 flex
   items-center justify-center p-5 modal-content">
     <!-- Previous Button -->
-    <button class="modal-nav prev absolute left-5 top-1/2 -translate-y-1/2
-    w-14 h-14 text-slate-400 hover:text-slate-50 rounded-full
-    flex items-center justify-center text-6xl font-bold transition-all">
+    <button class="modal-nav prev hidden absolute left-5 top-1/2 -translate-y-1/2
+    w-14 h-14 text-slate-400 hover:text-slate-50 active:text-slate-50 rounded-full z-99
+    md:flex items-center justify-center font-bold
+    lg:text-8xl md:text-6xl">
       <
     </button>
     <!-- Next Button -->
-    <button class="modal-nav next absolute right-5 top-1/2 -translate-y-1/2
-    w-14 h-14 text-slate-400 hover:text-slate-50 rounded-full
-    flex items-center justify-center text-6xl font-bold transition-all">
+    <button class="modal-nav next hidden absolute right-5 top-1/2 -translate-y-1/2
+    w-14 h-14 text-slate-400 hover:text-slate-50 active:text-slate-50 rounded-full z-99
+    md:flex items-center justify-center font-bold
+    lg:text-8xl md:text-6xl">
       >
     </button>
     <!-- Close Button -->
     <button class="modal-close absolute top-5 right-6 w-12 h-12
-    text-slate-400 hover:text-slate-50 rounded-full flex items-center justify-center
-    text-5xl transition-all">
+    text-slate-400 hover:text-slate-50 active:text-slate-50 rounded-full flex items-center justify-center
+    text-5xl transition-all z-99">
       &times;
     </button>
 
