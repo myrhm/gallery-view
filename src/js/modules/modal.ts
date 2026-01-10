@@ -64,6 +64,7 @@ export function nextMedia() {
   const filteredFiles = getFilteredFiles();
 
   if (modalIndex < filteredFiles.length - 1) {
+    prevBtn.classList.add('hover:text-slate-50');
     openModal(modalIndex + 1)
   } else {
     nextBtn.classList.remove('hover:text-slate-50');
@@ -75,6 +76,7 @@ export function prevMedia() {
   const filteredFiles = getFilteredFiles();
 
   if (modalIndex > 0) {
+    nextBtn.classList.add('hover:text-slate-50');
     openModal(modalIndex - 1);
   } else {
     prevBtn.classList.remove('hover:text-slate-50');
