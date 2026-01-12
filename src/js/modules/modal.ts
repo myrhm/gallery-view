@@ -15,6 +15,22 @@ export function openModal(index: number): void {
     return;
   }
 
+  if (modalIndex === 0) {
+    prevBtn.classList.remove('hover:text-slate-50');
+    prevBtn.classList.remove('active:text-slate-50');
+  } else {
+    prevBtn.classList.add('hover:text-slate-50');
+    prevBtn.classList.add('active:text-slate-50');
+  }
+
+  if (modalIndex === filteredFiles.length) {
+    nextBtn.classList.remove('hover:text-slate-50');
+    nextBtn.classList.remove('active:text-slate-50');
+  } else {
+    nextBtn.classList.add('hover:text-slate-50');
+    nextBtn.classList.add('active:text-slate-50');
+  }
+
   const file = filteredFiles[index];
   const container = getElementOrThrow('modalMediaContainer');
   container.innerHTML = '';
