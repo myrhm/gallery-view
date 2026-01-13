@@ -25,7 +25,7 @@ function createMediaItems(file: MediaFile, index: number): HTMLElement {
   item.className = 'media-item';
 
   let thumbnail: HTMLElement;
-  if (file.type == 'image') {
+  if (file.type == 'image' || file.type == 'animated_image') {
     const img = document.createElement('img');
     img.src = file.url;
     img.alt = file.name;
