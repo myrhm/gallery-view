@@ -36,6 +36,15 @@ function createMediaItems(file: MediaFile, index: number): HTMLElement {
     anim_img.src = file.thumbnail_url;
     anim_img.alt = file.name;
     anim_img.className = 'media-thumbnail';
+
+    anim_img.addEventListener('mouseenter', () => {
+      anim_img.src = file.url;
+    });
+
+    anim_img.addEventListener('mouseleave', () => {
+      anim_img.src = file.thumbnail_url;
+    });
+
     thumbnail = anim_img;
   } else {
     const video = document.createElement('video');
