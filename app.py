@@ -2,6 +2,7 @@ from flask import Flask, render_template, send_from_directory
 from pathlib import Path
 import os
 from datetime import datetime
+from PIL import Image, UnidentifiedImageError
 
 app = Flask(__name__)
 PORT = 9090
@@ -15,33 +16,33 @@ SUPPORTED_EXTENSIONS = {
     'video': ('.mp4', '.webm', '.mkv', '.avi', '.mov', '.flv', '.m3u8')
 }
 
-def is_animated_webp(filepath):
+def is_animated_image(filepath: str) -> bool:
     try:
-        with open(filepath, 'rb') as f:
-            data = f.read(50)
-            if b'VP8X' in data:
-                vp8x_index = data.find(b'VP8X')
-                if vp8x_index != -1 and vp8x_index + 8 < len(data):
-                    flags = data[vp8x_index + 8]
-                    return (flags & 0x02) != 0
-            return False
-    except:
+        with Image.open(filepath) as img:
+            return getattr(img, "is_animated", False)
+    except (UnidentifiedImageError, OSError):
         return False
 
 def determine_file_type(filepath: str, ext: str) -> str | None:
-    if ext in SUPPORTED_EXTENSIONS['image']:
-        return 'image'
-
-    if ext == '.webp':
-        return 'animated_image' if is_animated_webp(filepath) else 'image'
-
-    if ext in SUPPORTED_EXTENSIONS['animated_image']:
-        return 'animated_image'
+    if ext in SUPPORTED_EXTENSIONS['animated_image'] or ext in SUPPORTED_EXTENSIONS['image']:
+        return 'animated_image' if is_animated_image(filepath) else 'image'
 
     if ext in SUPPORTED_EXTENSIONS['video']:
         return 'video'
 
     return None
+
+def extract_first_frame(filepath: str, thumb_path: str) -> str:
+    try:
+        with Image.open(filepath) as img:
+            if not getattr(img, 'is_animated', False):
+                return False
+
+            img.seek(0)
+            img.convert('RGB').save(thumb_path, 'JPEG')
+            return True
+    except (UnidentifiedImageError, OSError):
+        return False
 
 def get_media_files():
     files = []
@@ -50,11 +51,20 @@ def get_media_files():
         for filename in os.listdir(MEDIA_FOLDER):
             filepath = os.path.join(MEDIA_FOLDER, filename)
 
+            thumb_dir = os.path.join(MEDIA_FOLDER, "thumbnails")
+            os.makedirs(thumb_dir, exist_ok=True)
+
+            name, _ = os.path.splitext(filename)
+            thumb_path = os.path.join(thumb_dir, f'{name}.jpg')
+
             if os.path.isdir(filepath):
                 continue
 
             ext = os.path.splitext(filename)[1].lower()
             file_type = determine_file_type(filepath, ext)
+
+            if file_type == 'animated_image':
+                extract_first_frame(filepath, thumb_path)
 
             if file_type is None:
                 continue
