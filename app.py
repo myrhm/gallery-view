@@ -106,7 +106,7 @@ def serve_media(filename):
 @app.route('/api/stats')
 def get_stats():
     files = get_media_files()
-    images = [f for f in files if f['type'] == 'image']
+    images = [f for f in files if f['type'] == 'image' or f['type'] == 'animated_image']
     videos = [f for f in files if f['type'] == 'video']
 
     return {
