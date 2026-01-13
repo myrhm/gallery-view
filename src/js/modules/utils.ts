@@ -1,8 +1,9 @@
 
 export interface MediaFile {
   name: string;
-  type: 'image' | 'video';
+  type: 'image' | 'video' | 'animated_image';
   url: string;
+  thumbnail_url: string;
   size: string;
   date: string;
 }

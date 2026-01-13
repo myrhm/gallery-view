@@ -36,7 +36,7 @@ export function openModal(index: number): void {
   container.innerHTML = '';
 
   let mediaElement: HTMLElement;
-  if (file.type == 'image') {
+  if (file.type == 'image' || file.type == 'animated_image') {
     const img = document.createElement('img');
     img.src = file.url;
     img.className = 'modal-media';
