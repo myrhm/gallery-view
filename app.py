@@ -76,6 +76,7 @@ def get_media_files():
                 'name': filename,
                 'type': file_type,
                 'url': f'/media/{filename}',
+                'thumbnail_url': f'/media/thumbnails/{name}.jpg',
                 'size': format_file_size(file_size),
                 'date': file_date
             })
@@ -112,6 +113,22 @@ def serve_media(filename):
         return "Access denied", 403
 
     return send_from_directory(MEDIA_FOLDER, filename)
+
+@app.route('/media/thumbnails/<filename>')
+def serve_thumbnail(filename):
+    if '..' in filename or filename.startswith('/'):
+        return "Invalid filename", 400
+
+    thumb_dir = os.path.join(MEDIA_FOLDER, "thumbnails")
+    filepath = os.path.join(thumb_dir, filename)
+
+    if not os.path.exists(filepath) or not os.path.isfile(filepath):
+        return "File not found", 404
+
+    if not os.path.abspath(filepath).startswith(os.path.abspath(MEDIA_FOLDER)):
+        return "Access denied", 403
+
+    return send_from_directory(thumb_dir, filename)
 
 @app.route('/api/stats')
 def get_stats():
