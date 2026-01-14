@@ -5,10 +5,10 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Tes npm run\" && exit 1",
-    "build:css": "tailwindcss -i ./input.css -o ./static/output.css",
-    "watch:css": "tailwindcss -i ./input.css -o ./static/output.css --watch",
-    "build:ts": "esbuild src/js/**/*.ts --outdir=static/js --bundle --format=esm --splitting --sourcemap",
-    "watch:ts": "esbuild src/js/**/*.ts --outdir=static/js --bundle --format=esm --splitting --sourcemap --watch",
+    "build:css": "tailwindcss -i ./input.css -o ./app/static/output.css",
+    "watch:css": "tailwindcss -i ./input.css -o ./app/static/output.css --watch",
+    "build:ts": "esbuild src/js/**/*.ts --outdir=app/static/js --bundle --format=esm --splitting --sourcemap",
+    "watch:ts": "esbuild src/js/**/*.ts --outdir=app/static/js --bundle --format=esm --splitting --sourcemap --watch",
     "dev": "concurrently \"npm run watch:css\" \"npm run watch:ts\"",
     "build": "npm run build:css && npm run build:ts",
     "start": "poetry run python app.py"
