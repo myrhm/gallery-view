@@ -1,5 +1,7 @@
 # Changelog
 
+## 0.2.1 - 15-01-2026
+- Refactor backend into modular app structure ([#4](https://github.com/myrhm/gallery-view/pull/4))
 ## 0.2.0-alpha - 14-01-2026
 - Add animated image detection and animate thumbnail on hover ([#3](https://github.com/myrhm/gallery-view/pull/3))
 ## 0.1.2-alpha - 13-01-2026
