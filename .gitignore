@@ -1,8 +1,9 @@
 poetry.lock
 node_modules
 package-lock.json
+__pycache__
 
 media
 
-static/js
-static/output.css
+app/static/js
+app/static/output.css
