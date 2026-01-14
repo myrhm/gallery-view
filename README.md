@@ -6,3 +6,13 @@
 
 * [Python >= 3.14](https://www.python.org/downloads/)
 * [Node.js >= 20](https://nodejs.org/en/download)
+
+## installation
+
+```bash
+
+git clone https://github.com/myrhm/gallery-view.git
+npm install
+poetry install --no-root
+
+```
