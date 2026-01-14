@@ -11,7 +11,7 @@
     "watch:ts": "esbuild src/js/**/*.ts --outdir=app/static/js --bundle --format=esm --splitting --sourcemap --watch",
     "dev": "concurrently \"npm run watch:css\" \"npm run watch:ts\"",
     "build": "npm run build:css && npm run build:ts",
-    "start": "poetry run python -m entry_point"
+    "start": "poetry run python -m app"
   },
   "repository": {
     "type": "git",
