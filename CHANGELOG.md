@@ -1,6 +1,8 @@
 # Changelog
 
-## 0.2.1 - 15-01-2026
+## 0.2.2-alpha - 15-01-2026
+- Optimize gallery thumbnail generation and speed up first-run rendering ([#5](https://github.com/myrhm/gallery-view/pull/5))
+## 0.2.1-alpha - 15-01-2026
 - Refactor backend into modular app structure ([#4](https://github.com/myrhm/gallery-view/pull/4))
 ## 0.2.0-alpha - 14-01-2026
 - Add animated image detection and animate thumbnail on hover ([#3](https://github.com/myrhm/gallery-view/pull/3))
