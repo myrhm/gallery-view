@@ -1,9 +1,12 @@
 import os
+import threading
 from datetime import datetime
 from app.config import MEDIA_FOLDER, SUPPORTED_EXTENSIONS
 from app.service.thumbnails import extract_first_frame
 from app.utils.files import format_file_size
 from PIL import Image, UnidentifiedImageError
+
+THUMBNAILS_GENERATING = set()
 
 def determine_file_type(filepath: str, ext: str) -> str | None:
     if ext in SUPPORTED_EXTENSIONS['animated_image'] or ext in SUPPORTED_EXTENSIONS['image']:
@@ -40,8 +43,14 @@ def get_media_files():
             ext = os.path.splitext(filename)[1].lower()
             file_type = determine_file_type(filepath, ext)
 
-            if file_type == 'animated_image':
-                extract_first_frame(filepath, thumb_path)
+            if file_type == 'animated_image' and not os.path.exists(thumb_path):
+                THUMBNAILS_GENERATING.add(filepath)
+                thread = threading.Thread(
+                    target=extract_first_frame,
+                    args=(filepath, thumb_path),
+                    daemon=True
+                )
+                thread.start()
 
             if file_type is None:
                 continue
