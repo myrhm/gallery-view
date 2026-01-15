@@ -43,7 +43,7 @@ def get_media_files():
             ext = os.path.splitext(filename)[1].lower()
             file_type = determine_file_type(filepath, ext)
 
-            if file_type == 'animated_image' and not os.path.exist(thumb_path):
+            if file_type == 'animated_image' and not os.path.exists(thumb_path):
                 THUMBNAILS_GENERATING.add(filepath)
                 thread = threading.Thread(
                     target=extract_first_frame,
