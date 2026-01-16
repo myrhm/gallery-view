@@ -1,4 +1,4 @@
-from flask import send_from_directory, render_template
+from flask import send_from_directory, render_template, jsonify
 from app.config import MEDIA_FOLDER
 from app.service.media_scan import get_media_files
 import os
