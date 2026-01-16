@@ -6,10 +6,10 @@ import os
 def register_routes(app):
     @app.route('/')
     def gallery():
-        return render_template('gallery.html', files=files)
+        return render_template('gallery.html')
 
     @app.route('/api/files')
-    def get_files:
+    def get_files():
         try:
             response = get_media_files()
             return jsonify(response)
