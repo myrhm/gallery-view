@@ -79,22 +79,22 @@ function createMediaItems(file: MediaFile, index: number): HTMLElement {
   return item;
 }
 
-export function renderGallery(): void {
+export function renderGallery(files: MediaFile[]): void {
   const gallery = getElementOrThrow('gallery');
   const emptyState = getElementOrThrow('emptyState');
 
-  filteredFiles = filterFiles(currentFilter);
+  // filteredFiles = filterFiles(currentFilter);
   log(`Rendering gallery (${filteredFiles.length} files)`);
 
   gallery.innerHTML = '';
 
-  if (filteredFiles.length == 0) {
+  if (files.length == 0) {
     emptyState.classList.remove('hidden');
     gallery.classList.add('hidden');
     return;
   }
 
-  filteredFiles.forEach((file: MediaFile, index: number) => {
+  files.forEach((file: MediaFile, index: number) => {
     const item = createMediaItems(file, index);
     gallery.appendChild(item);
   })

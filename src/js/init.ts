@@ -8,25 +8,32 @@ export async function initApp(): Promise<void> {
   log('Initializing Media Viewer...');
 
   try {
-    const mediaFiles = (window as any).mediaFiles as MediaFile[] | undefined;
-    if (mediaFiles && Array.isArray(mediaFiles)) {
-      setMediaFiles(mediaFiles);
-      log(`Loaded ${mediaFiles.length} media files from template`);
-    } else {
-      log('No media files found in window.mediaFiles', 'warn');
-    }
-
-    await fetchStats();
-    renderGallery();
 
     setupModalButtons();
     setupCloseModalBackground();
-    setupSwipe()
+    setupSwipe();
+
+    await loadPage();
 
     log('Rendering gallery success', 'success');
 
   } catch (error) {
     const message = error instanceof Error ? error.message : String(error);
     log(`Initialization error: ${message}`, 'error');
+  }
+}
+
+export async function loadPage(): Promise<void> {
+  try {
+
+    const response: MediaFile[] = await fetch('/api/files');
+    const files: MediaFile[] = await response.json();
+    console.log(files);
+
+    renderGallery(files);
+    fetchStats();
+
+  } catch (error) {
+    log(`Error loading page`, 'error');
   }
 }
