@@ -16,7 +16,7 @@ export async function initApp(): Promise<void> {
       log('No media files found in window.mediaFiles', 'warn');
     }
 
-    await fetchStats();
+    fetchStats();
     renderGallery();
 
     setupModalButtons();
