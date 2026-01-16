@@ -6,8 +6,16 @@ import os
 def register_routes(app):
     @app.route('/')
     def gallery():
-        files = get_media_files()
         return render_template('gallery.html', files=files)
+
+    @app.route('/api/files')
+    def get_files:
+        try:
+            response = get_media_files()
+            return jsonify(response)
+        except Exception as e:
+            print(f"Error in /api/files: {e}")
+            return jsonify({'error': str(e)}), 500
 
     @app.route('/media/<filename>')
     def serve_media(filename):
