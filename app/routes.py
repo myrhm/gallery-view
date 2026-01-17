@@ -1,13 +1,26 @@
-from flask import send_from_directory, render_template
+from flask import send_from_directory, render_template, jsonify, request
 from app.config import MEDIA_FOLDER
-from app.service.media_scan import get_media_files
+from app.service.media_scan_new import MediaService
 import os
+
+media_service = MediaService()
 
 def register_routes(app):
     @app.route('/')
     def gallery():
-        files = get_media_files()
-        return render_template('gallery.html', files=files)
+        return render_template('gallery.html')
+
+    @app.route('/api/files')
+    def get_files():
+        try:
+            page = request.args.get('page', 1, type=int)
+            limit = request.args.get('limit', 100, type=int)
+
+            response = media_service.get_page_metadata(page, limit)
+            return jsonify(response)
+        except Exception as e:
+            print(f"Error in /api/files: {e}")
+            return jsonify({'error': str(e)}), 500
 
     @app.route('/media/<filename>')
     def serve_media(filename):

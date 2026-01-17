@@ -1,4 +1,4 @@
-import { getMediaFiles, MediaFile, log, getElementOrThrow } from './utils.js';
+import { MediaFile, log, getElementOrThrow } from './utils.js';
 import { openModal } from './modal.js';
 
 type FilterType = 'all' | 'image' | 'video';
@@ -10,14 +10,13 @@ export function getFilteredFiles(): MediaFile[] {
   return filteredFiles;
 }
 
-export function filterFiles(filter: FilterType): MediaFile[] {
-  const allFiles = getMediaFiles();
+export function filterFiles(filter: FilterType, files: MediaFile[]): MediaFile[] {
 
   if (filter == 'all') {
-    return allFiles;
+    return files;
   }
 
-  return allFiles.filter((file: MediaFile) => file.type == filter);
+  return files.filter((file: MediaFile) => file.type == filter);
 }
 
 function createMediaItems(file: MediaFile, index: number): HTMLElement {
@@ -79,22 +78,24 @@ function createMediaItems(file: MediaFile, index: number): HTMLElement {
   return item;
 }
 
-export function renderGallery(): void {
+export function renderGallery(files: MediaFile[]): void {
   const gallery = getElementOrThrow('gallery');
   const emptyState = getElementOrThrow('emptyState');
 
-  filteredFiles = filterFiles(currentFilter);
+  filteredFiles = filterFiles(currentFilter, files);
+
+  // filteredFiles = filterFiles(currentFilter);
   log(`Rendering gallery (${filteredFiles.length} files)`);
 
   gallery.innerHTML = '';
 
-  if (filteredFiles.length == 0) {
+  if (files.length == 0) {
     emptyState.classList.remove('hidden');
     gallery.classList.add('hidden');
     return;
   }
 
-  filteredFiles.forEach((file: MediaFile, index: number) => {
+  files.forEach((file: MediaFile, index: number) => {
     const item = createMediaItems(file, index);
     gallery.appendChild(item);
   })
