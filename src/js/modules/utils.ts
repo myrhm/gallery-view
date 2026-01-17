@@ -27,14 +27,6 @@ export function formatFileSize(byteSize: number): string {
   return `${size.toFixed(1)}TB`;
 }
 
-export function getMediaFiles(): MediaFile[] {
-  return (window as any).mediaFiles || [];
-}
-
-export function setMediaFiles(files: MediaFile[]): void {
-  (window as any).mediaFiles = files;
-}
-
 export function log(message: string, type: 'info' | 'success' | 'warn' | 'error' = 'info'): void {
   const timestamp = new Date().toLocaleTimeString();
   const prefix = `[${timestamp} ${type.toUpperCase()}]`;
