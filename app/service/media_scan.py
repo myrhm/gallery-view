@@ -1,74 +1,140 @@
 import os
+import time
+import math
 import threading
 from datetime import datetime
+from typing import List, Dict, Any
 from app.config import MEDIA_FOLDER, SUPPORTED_EXTENSIONS
+from app.utils.files import format_file_size, determine_file_type
 from app.service.thumbnails import extract_first_frame
-from app.utils.files import format_file_size
-from PIL import Image, UnidentifiedImageError
 
 THUMBNAILS_GENERATING = set()
 
-def determine_file_type(filepath: str, ext: str) -> str | None:
-    if ext in SUPPORTED_EXTENSIONS['animated_image'] or ext in SUPPORTED_EXTENSIONS['image']:
-        return 'animated_image' if is_animated_image(filepath) else 'image'
+class MediaService:
+    def __init__(self):
+        self._indexed_files: List[Dict[str, any]] = None
+        self._images_count_cache: int = None
+        self._videos_count_cache: int = None
 
-    if ext in SUPPORTED_EXTENSIONS['video']:
-        return 'video'
+    def get_page_metadata(self, page: int, limit: int) -> Dict[str, Any]:
+        indexed = self._get_indexed_files()
 
-    return None
+        total = len(indexed)
+        total_pages = math.ceil(total/limit) if limit > 0 else 1
 
-def is_animated_image(filepath: str) -> bool:
-    try:
-        with Image.open(filepath) as img:
-            return getattr(img, "is_animated", False)
-    except (UnidentifiedImageError, OSError):
-        return False
+        if page < 1:
+            page = 1
+        if page > total_pages:
+            page = total_pages
 
-def get_media_files():
-    files = []
+        offset = (page - 1) * limit
+        page_items = indexed[offset:offset + limit]
 
-    try:
-        thumb_dir = os.path.join(MEDIA_FOLDER, "thumbnails")
-        os.makedirs(thumb_dir, exist_ok=True)
+        self._generate_thumbnails_async_for_items(page_items)
 
-        for filename in os.listdir(MEDIA_FOLDER):
-            filepath = os.path.join(MEDIA_FOLDER, filename)
+        if (self._images_count_cache is None):
+            images_count = len([
+                f for f in indexed
+                if f['type'] in ('image', 'animated_image')
+            ])
+        else:
+            images_count = self._images_count_cache
 
-            name, _ = os.path.splitext(filename)
-            thumb_path = os.path.join(thumb_dir, f'{name}.jpg')
+        if (self._videos_count_cache is None):
+            videos_count = len([
+                f for f in indexed
+                if f['type'] in ('video')
+            ])
+        else:
+            videos_count = self._videos_count_cache
 
-            if os.path.isdir(filepath):
-                continue
+        return {
+            'items': page_items,
+            'page': page,
+            'limit': limit,
+            'total_pages': total_pages,
+            'stats': {
+                'total': total,
+                'images': images_count,
+                'videos': videos_count
+            }
+        }
 
-            ext = os.path.splitext(filename)[1].lower()
-            file_type = determine_file_type(filepath, ext)
+    def _get_indexed_files(self) -> List[Dict[str, Any]]:
+        now = time.time()
 
-            if file_type == 'animated_image' and not os.path.exists(thumb_path):
-                THUMBNAILS_GENERATING.add(filepath)
+        if (self._indexed_files is not None):
+            return self._indexed_files
+
+        print(f'[Index] Building Index...')
+        indexed = self._scan_and_index_files()
+
+        self._indexed_files = indexed
+
+        return indexed
+
+    def _scan_and_index_files(self):
+        files = []
+
+        try:
+            thumb_dir = os.path.join(MEDIA_FOLDER, "thumbnails")
+            os.makedirs(thumb_dir, exist_ok=True)
+
+            for filename in sorted(os.listdir(MEDIA_FOLDER)):
+                filepath = os.path.join(MEDIA_FOLDER, filename)
+
+                if os.path.isdir(filepath):
+                    continue
+
+                ext = os.path.splitext(filename)[1].lower()
+                file_type = determine_file_type(filepath, ext)
+
+                if file_type is None:
+                    continue
+
+                try:
+                    stat = os.stat(filepath)
+                    file_size = stat.st_size
+                    file_date = datetime.fromtimestamp(stat.st_mtime).strftime('%Y-%m-%d')
+                except (OSError, ValueError):
+                    continue
+
+                # create thumbnail path
+                name, _ = os.path.splitext(filename)
+                thumb_filename = f'{name}.jpg'
+                thumb_path = os.path.join(
+                    MEDIA_FOLDER, 'thumbnails', thumb_filename
+                )
+
+                files.append({
+                    'name': filename,
+                    'type': file_type,
+                    'url': f'/media/{filename}',
+                    'thumbnail_url': f'/media/thumbnails/{thumb_filename}',
+                    'size': format_file_size(file_size),
+                    'date': file_date,
+                    'has_thumbnail': os.path.exists(thumb_path),
+                })
+
+        except Exception as e:
+            print(f'[Index] Error Scanning: {e}')
+
+        return files
+
+    def _generate_thumbnails_async_for_items(self, items: List[Dict]):
+        for item in items:
+            # create thumbnail path
+            name, _ = os.path.splitext(item['name'])
+            thumb_filename = f'{name}.jpg'
+            thumb_path = os.path.join(
+                MEDIA_FOLDER, 'thumbnails', thumb_filename
+            )
+            filepath = os.path.join(MEDIA_FOLDER, item['name'])
+
+            if item['type'] == 'animated_image' and not os.path.exists(thumb_path):
+                THUMBNAILS_GENERATING.add(os.path.join(filepath))
                 thread = threading.Thread(
                     target=extract_first_frame,
-                    args=(filepath, thumb_path),
-                    daemon=True
+                    args=(filepath, thumb_path)
                 )
                 thread.start()
-
-            if file_type is None:
-                continue
-
-            stat = os.stat(filepath)
-            file_size = stat.st_size
-            file_date = datetime.fromtimestamp(stat.st_mtime).strftime('%Y-%m-%d')
-            files.append({
-                'name': filename,
-                'type': file_type,
-                'url': f'/media/{filename}',
-                'thumbnail_url': f'/media/thumbnails/{name}.jpg',
-                'size': format_file_size(file_size),
-                'date': file_date
-            })
-    except Exception as e:
-        print(f"Error reading media folder: {e}")
-
-    files.sort(key=lambda x: x['name'].lower())
-
-    return files

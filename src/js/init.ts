@@ -1,5 +1,5 @@
 import { fetchStats } from './modules/api.js';
-import { log, MediaFile } from './modules/utils.js';
+import { log, MediaFile, Stats } from './modules/utils.js';
 import { renderGallery } from './modules/gallery.js';
 import { setupModalButtons, setupCloseModalBackground } from './modules/modal.js';
 import { setupSwipe } from './modules/modalSwipe.js';
@@ -13,7 +13,7 @@ export async function initApp(): Promise<void> {
     setupCloseModalBackground();
     setupSwipe();
 
-    await loadPage();
+    await loadPage(1);
 
     log('Rendering gallery success', 'success');
 
@@ -23,14 +23,17 @@ export async function initApp(): Promise<void> {
   }
 }
 
-export async function loadPage(): Promise<void> {
+export async function loadPage(page: number): Promise<void> {
   try {
+    const limit: number = 500;
 
-    const response = await fetch('/api/files');
-    const files: MediaFile[] = await response.json();
+    const response = await fetch(`/api/files?page=${page}&limit=${limit}`);
+    const data = await response.json();
+    const files: MediaFile[] = data.items;
+    const stats: Stats = data.stats;
 
     renderGallery(files);
-    fetchStats();
+    fetchStats(stats);
 
   } catch (error) {
     log(`Error loading page`, 'error');

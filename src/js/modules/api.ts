@@ -1,15 +1,10 @@
 import { log, Stats, getElementOrThrow } from './utils.js';
 
-export async function fetchStats(): Promise<Stats | null> {
+export async function fetchStats(stats): Promise<Stats | null> {
   try {
     log('Fetching stats...');
-    const response = await fetch('api/stats');
 
-    if (!response.ok) {
-      throw new Error(`HTTP Error! status: ${response.status}`);
-    }
-
-    const data: Stats = await response.json();
+    const data: Stats = stats;
 
     const totalEl = getElementOrThrow('totalCount');
     const imageEl = getElementOrThrow('imageCount');

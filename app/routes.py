@@ -1,7 +1,9 @@
-from flask import send_from_directory, render_template, jsonify
+from flask import send_from_directory, render_template, jsonify, request
 from app.config import MEDIA_FOLDER
-from app.service.media_scan import get_media_files
+from app.service.media_scan_new import MediaService
 import os
+
+media_service = MediaService()
 
 def register_routes(app):
     @app.route('/')
@@ -11,7 +13,10 @@ def register_routes(app):
     @app.route('/api/files')
     def get_files():
         try:
-            response = get_media_files()
+            page = request.args.get('page', 1, type=int)
+            limit = request.args.get('limit', 100, type=int)
+
+            response = media_service.get_page_metadata(page, limit)
             return jsonify(response)
         except Exception as e:
             print(f"Error in /api/files: {e}")
