@@ -1,4 +1,4 @@
-import { fetchStats } from './modules/api.js';
+import { setStats } from './modules/api.js';
 import { log, MediaFile, Stats } from './modules/utils.js';
 import { renderGallery } from './modules/gallery.js';
 import { setupModalButtons, setupCloseModalBackground } from './modules/modal.js';
@@ -33,7 +33,7 @@ export async function loadPage(page: number): Promise<void> {
     const stats: Stats = data.stats;
 
     renderGallery(files);
-    fetchStats(stats);
+    setStats(stats);
 
   } catch (error) {
     log(`Error loading page`, 'error');

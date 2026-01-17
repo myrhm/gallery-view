@@ -1,6 +1,6 @@
 import { log, Stats, getElementOrThrow } from './utils.js';
 
-export async function fetchStats(stats): Promise<Stats | null> {
+export async function setStats(stats): Promise<Stats | null> {
   try {
     log('Fetching stats...');
 
