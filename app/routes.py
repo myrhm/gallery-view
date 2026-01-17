@@ -1,6 +1,6 @@
 from flask import send_from_directory, render_template, jsonify, request
 from app.config import MEDIA_FOLDER
-from app.service.media_scan_new import MediaService
+from app.service.media_scan import MediaService
 import os
 
 media_service = MediaService()
