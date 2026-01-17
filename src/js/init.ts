@@ -8,7 +8,6 @@ export async function initApp(): Promise<void> {
   log('Initializing Media Viewer...');
 
   try {
-
     setupModalButtons();
     setupCloseModalBackground();
     setupSwipe();
