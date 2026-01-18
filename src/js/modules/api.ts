@@ -2,7 +2,7 @@ import { log, Stats, getElementOrThrow } from './utils.js';
 
 export async function setStats(stats): Promise<Stats | null> {
   try {
-    log('Fetching stats...');
+    log('Loading stats...');
 
     const data: Stats = stats;
 
