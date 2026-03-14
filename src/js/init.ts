@@ -4,6 +4,20 @@ import { renderGallery } from './modules/gallery.js';
 import { setupModalButtons, setupCloseModalBackground } from './modules/modal.js';
 import { setupSwipe } from './modules/modalSwipe.js';
 
+let currentPage = 1;
+let currentLimit = document.getElementById("itemLimit").value;
+
+function initPagination(): void {
+  const select = document.getElementById("itemLimit") as HTMLSelectElement;
+
+  currentLimit = parseInt(select.value);
+  select.addEventListener("change", () => {
+    currentLimit = parseInt(select.value);
+    currentPage = 1;
+    loadPage(currentPage);
+  });
+}
+
 export async function initApp(): Promise<void> {
   log('Initializing Media Viewer...');
 
@@ -11,8 +25,9 @@ export async function initApp(): Promise<void> {
     setupModalButtons();
     setupCloseModalBackground();
     setupSwipe();
+    initPagination();
 
-    await loadPage(1);
+    await loadPage(currentPage);
 
     log('Rendering gallery success', 'success');
 
@@ -24,7 +39,7 @@ export async function initApp(): Promise<void> {
 
 export async function loadPage(page: number): Promise<void> {
   try {
-    const limit: number = 500;
+    const limit: number = currentLimit;
 
     const response = await fetch(`/api/files?page=${page}&limit=${limit}`);
     const data = await response.json();
