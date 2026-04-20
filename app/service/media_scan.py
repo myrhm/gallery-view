@@ -4,7 +4,7 @@ import math
 import threading
 from datetime import datetime
 from typing import List, Dict, Any
-from app.config import MEDIA_FOLDER, SUPPORTED_EXTENSIONS
+from app.config import SUPPORTED_EXTENSIONS, get_media_folder
 from app.utils.files import format_file_size, determine_file_type
 from app.service.thumbnails import extract_first_frame
 
@@ -74,14 +74,15 @@ class MediaService:
         return indexed
 
     def _scan_and_index_files(self):
+        folder = get_media_folder()
         files = []
 
         try:
-            thumb_dir = os.path.join(MEDIA_FOLDER, "thumbnails")
+            thumb_dir = os.path.join(folder, "thumbnails")
             os.makedirs(thumb_dir, exist_ok=True)
 
-            for filename in sorted(os.listdir(MEDIA_FOLDER)):
-                filepath = os.path.join(MEDIA_FOLDER, filename)
+            for filename in sorted(os.listdir(folder)):
+                filepath = os.path.join(folder, filename)
 
                 if os.path.isdir(filepath):
                     continue
@@ -103,7 +104,7 @@ class MediaService:
                 name, _ = os.path.splitext(filename)
                 thumb_filename = f'{name}.jpg'
                 thumb_path = os.path.join(
-                    MEDIA_FOLDER, 'thumbnails', thumb_filename
+                    folder, 'thumbnails', thumb_filename
                 )
 
                 files.append({
@@ -122,14 +123,16 @@ class MediaService:
         return files
 
     def _generate_thumbnails_async_for_items(self, items: List[Dict]):
+        folder = get_media_folder()
+
         for item in items:
             # create thumbnail path
             name, _ = os.path.splitext(item['name'])
             thumb_filename = f'{name}.jpg'
             thumb_path = os.path.join(
-                MEDIA_FOLDER, 'thumbnails', thumb_filename
+                folder, 'thumbnails', thumb_filename
             )
-            filepath = os.path.join(MEDIA_FOLDER, item['name'])
+            filepath = os.path.join(folder, item['name'])
 
             if item['type'] == 'animated_image' and not os.path.exists(thumb_path):
                 THUMBNAILS_GENERATING.add(os.path.join(filepath))
