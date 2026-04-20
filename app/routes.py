@@ -1,7 +1,8 @@
-from flask import send_from_directory, render_template, jsonify, request
-from app.config import MEDIA_FOLDER
+from flask import current_app, send_from_directory, render_template, jsonify, request, abort
+# from app.config import MEDIA_FOLDER
 from app.service.media_scan import MediaService
 import os
+from pathlib import Path
 
 media_service = MediaService()
 
@@ -24,32 +25,27 @@ def register_routes(app):
 
     @app.route('/media/<filename>')
     def serve_media(filename):
-        if '..' in filename or filename.startswith('/'):
-            return "Invalid filename", 400
+        base: Path = current_app.config["MEDIA_FOLDER"]
+        target = (base / filename).resolve()
 
-        filepath = os.path.join(MEDIA_FOLDER, filename)
+        if not str(target).startswith(str(base.resolve())):
+            abort(403, description="Access denied")
 
-        if not os.path.exists(filepath) or not os.path.isfile(filepath):
-            return "File not found", 404
+        if not target.exists() or not target.is_file():
+            abort(404, description="File not found")
 
-        if not os.path.abspath(filepath).startswith(os.path.abspath(MEDIA_FOLDER)):
-            return "Access denied", 403
-
-        return send_from_directory(MEDIA_FOLDER, filename)
+        return send_from_directory(base, filename)
 
     @app.route('/media/thumbnails/<filename>')
     def serve_thumbnail(filename):
-        if '..' in filename or filename.startswith('/'):
-            return "Invalid filename", 400
+        base: Path = current_app.config["MEDIA_FOLDER"]
+        thumb_dir = (base / "thumbnails").resolve()
+        target = (thumb_dir / filename).resolve()
 
-        thumb_dir = os.path.join(MEDIA_FOLDER, "thumbnails")
-        filepath = os.path.join(thumb_dir, filename)
-
-        if not os.path.exists(filepath) or not os.path.isfile(filepath):
-            return "File not found", 404
-
-        if not os.path.abspath(filepath).startswith(os.path.abspath(MEDIA_FOLDER)):
-            return "Access denied", 403
+        if not str(target).startswith(str(thumb_dir)):
+            abort(403, description="Access denied")
+        if not target.exists() or not target.is_file():
+            abort(404, description="File not found")
 
         return send_from_directory(thumb_dir, filename)
 
