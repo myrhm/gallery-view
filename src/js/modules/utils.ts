@@ -14,19 +14,6 @@ export interface Stats {
   videos: number;
 }
 
-export function formatFileSize(byteSize: number): string {
-  const unit = ['B', 'KB', 'MB', 'GB'];
-  let size = byteSize;
-
-  for (let unit of units) {
-    if (size < 1024.0) {
-      return `${size.toFixed(1)}${unit}`;
-    }
-    size /= 1024.0;
-  }
-  return `${size.toFixed(1)}TB`;
-}
-
 export function log(message: string, type: 'info' | 'success' | 'warn' | 'error' = 'info'): void {
   const timestamp = new Date().toLocaleTimeString();
   const prefix = `[${timestamp} ${type.toUpperCase()}]`;
