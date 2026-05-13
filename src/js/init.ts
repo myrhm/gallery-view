@@ -3,13 +3,13 @@ import { log, MediaFile, Stats } from './modules/utils.js';
 import { renderGallery } from './modules/gallery.js';
 import { setupModalButtons, setupCloseModalBackground } from './modules/modal.js';
 import { setupSwipe } from './modules/modalSwipe.js';
+import { renderPagination } from './modules/pagination.js';
 
 let currentPage = 1;
-let currentLimit = document.getElementById("itemLimit").value;
+let currentLimit: number;
 
-function initPagination(): void {
+function initItemLimit(): void {
   const select = document.getElementById("itemLimit") as HTMLSelectElement;
-
   currentLimit = parseInt(select.value);
   select.addEventListener("change", () => {
     currentLimit = parseInt(select.value);
@@ -25,7 +25,7 @@ export async function initApp(): Promise<void> {
     setupModalButtons();
     setupCloseModalBackground();
     setupSwipe();
-    initPagination();
+    initItemLimit();
 
     await loadPage(currentPage);
 
@@ -39,15 +39,20 @@ export async function initApp(): Promise<void> {
 
 export async function loadPage(page: number): Promise<void> {
   try {
-    const limit: number = currentLimit;
-
-    const response = await fetch(`/api/files?page=${page}&limit=${limit}`);
+    const response = await fetch(`/api/files?page=${page}&limit=${currentLimit}`);
     const data = await response.json();
     const files: MediaFile[] = data.items;
     const stats: Stats = data.stats;
+    const totalPages: number = data.total_pages;
+
+    currentPage = data.page;
 
     renderGallery(files);
     setStats(stats);
+    renderPagination(currentPage, totalPages, (p) => {
+      currentPage = p;
+      loadPage(currentPage);
+    });
 
   } catch (error) {
     log(`Error loading page`, 'error');
