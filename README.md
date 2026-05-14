@@ -65,9 +65,19 @@ python app.py
 ### Optional: custom media folder
 
 By default, the app looks for a `media/` folder in the project root.  
-You can override this via CLI:
+You can override this via CLI using a **relative** or **absolute** path:
 
+**Relative path** (relative to the project root):
 ```bash
-python app.py --media-folder /path/to/your/media
+python app.py --media-folder photos
+```
+
+**Absolute path** (anywhere on your machine):
+```bash
+# Windows
+python app.py --media-folder "C:\Users\kamu\Pictures"
+
+# macOS / Linux
+python app.py --media-folder /home/kamu/Pictures
 ```
 
