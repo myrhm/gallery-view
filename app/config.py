@@ -5,7 +5,7 @@ from flask import current_app
 PORT = 9090
 
 BASE_DIR = Path(__file__).resolve().parent.parent
-DEFAULT_MEDIA_FOLDER = BASE_DIR / 'media-test'
+DEFAULT_MEDIA_FOLDER = BASE_DIR / 'media'
 
 SUPPORTED_EXTENSIONS = {
     'image': ('.jpg', '.jpeg', '.png', '.bmp', '.svg'),

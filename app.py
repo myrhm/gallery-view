@@ -6,7 +6,8 @@ import app.config as config
 
 def resolve_media_folder(cli_value: str | None) -> Path:
     if cli_value:
-        return (config.BASE_DIR / cli_value).resolve()
+        p = Path(cli_value)
+        return p.resolve() if p.is_absolute() else (config.BASE_DIR / p).resolve()
     return config.DEFAULT_MEDIA_FOLDER.resolve()
 
 def main():
