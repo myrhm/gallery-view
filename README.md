@@ -67,17 +67,13 @@ python app.py
 By default, the app looks for a `media/` folder in the project root.  
 You can override this via CLI using a **relative** or **absolute** path:
 
-**Relative path** (relative to the project root):
-```bash
+**With pip/venv:**
+```
 python app.py --media-folder photos
-```
-
-**Absolute path** (anywhere on your machine):
-```bash
-# Windows
 python app.py --media-folder "C:\Users\kamu\Pictures"
-
-# macOS / Linux
-python app.py --media-folder /home/kamu/Pictures
 ```
-
+**With Poetry:**
+```
+poetry run python app.py --media-folder photos
+poetry run python app.py --media-folder "C:\Users\kamu\Pictures"
+```
